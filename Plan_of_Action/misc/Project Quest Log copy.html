@@ -1,0 +1,689 @@
+<!-- Chosen Palette: Calm Harmony (Warm Neutrals: stone, Complimentary: indigo, Accent: amber) -->
+<!-- This is an interactive HTML page to track the *building* of the TAFG v2 project, based on the blueprint. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAFG v2: Project Quest Log</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --color-primary: 39, 39, 42; /* stone-700 */
+            --color-primary-accent: 79, 70, 229; /* indigo-600 */
+            --color-secondary-accent: 217, 119, 6; /* amber-600 */
+            --color-bg-light: 245, 245, 244; /* stone-100 */
+            --color-bg-white: 255, 255, 255;
+            --color-success: 21, 128, 61; /* green-700 */
+        }
+        body {
+            background-color: rgb(var(--color-bg-light));
+            color: rgb(var(--color-primary));
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Global Progress Bar */
+        .progress-bar-bg {
+            @apply w-full bg-stone-200 rounded-full h-4 overflow-hidden;
+        }
+        .progress-bar-fill {
+            @apply bg-indigo-600 h-4 rounded-full transition-all duration-500 ease-out;
+        }
+        
+        /* Stepper Timeline Styles */
+        .timeline {
+            @apply relative pl-8;
+        }
+        .timeline::before {
+            @apply content-[''] absolute top-0 left-3.5 h-full w-1.5 bg-stone-200 rounded-full;
+        }
+        .timeline-step {
+            @apply relative;
+        }
+        .timeline-dot {
+            @apply absolute -left-1.5 top-1.5 h-8 w-8 rounded-full bg-stone-300 border-4 border-white flex items-center justify-center font-bold text-sm text-stone-600 transition-all duration-300;
+        }
+        .timeline-step-complete .timeline-dot {
+            @apply bg-green-600 text-white;
+        }
+        .timeline-content {
+            @apply ml-8;
+        }
+        .timeline-title {
+            @apply text-lg font-semibold text-stone-700 cursor-pointer;
+        }
+        .timeline-tasks {
+            @apply mt-4 mb-8 overflow-hidden transition-all duration-300 ease-in-out;
+        }
+        .timeline-tasks:not(.expanded) {
+            @apply max-h-0 opacity-0;
+        }
+        .timeline-tasks.expanded {
+            @apply max-h-[2000px] opacity-100; /* 2000px is arbitrary "big" value */
+        }
+        
+        /* Task item styling */
+        .task-item {
+            @apply bg-white shadow-sm rounded-lg p-4 flex items-center transition-all duration-200 mt-4;
+        }
+        .task-item input[type="checkbox"] {
+            @apply h-5 w-5 text-indigo-600 border-stone-300 rounded focus:ring-indigo-500;
+        }
+        .task-item label {
+            @apply ml-4 text-stone-700 font-medium;
+        }
+        .task-item .task-desc {
+            @apply ml-4 text-sm text-stone-500;
+        }
+        .task-complete .task-item {
+             @apply bg-stone-50 opacity-60;
+        }
+        .task-complete label {
+            @apply line-through text-stone-500;
+        }
+
+        /* Code block styling */
+        pre {
+            @apply bg-stone-800 text-stone-100 text-sm rounded-md p-4 overflow-x-auto;
+        }
+        code .comment {
+            @apply text-stone-400;
+        }
+        code .keyword {
+            @apply text-indigo-300;
+        }
+        code .string {
+            @apply text-amber-300;
+        }
+        code .function {
+            @apply text-green-300;
+        }
+        
+        /* Blueprint <details> tags (for raw text page) */
+        .blueprint-doc-content h3 {
+             @apply text-lg font-semibold text-amber-600 mb-4;
+        }
+        .blueprint-doc-content h4 {
+             @apply text-md font-semibold text-stone-700 mt-6 mb-2;
+        }
+        .blueprint-doc-content p {
+            @apply text-sm text-stone-600 mb-2;
+        }
+         .blueprint-doc-content ul {
+            @apply list-disc list-inside text-sm text-stone-600 mb-4;
+        }
+        .blueprint-doc-content li {
+            @apply mb-1;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-600">TAFG v2: Project Quest Log</h1>
+                <p class="text-stone-600">Tracking the transmutation of our blueprint into a real tool.</p>
+            </div>
+            <!-- Page Toggle Button -->
+            <button id="toggle-view-btn" class="bg-stone-100 text-stone-700 font-medium py-2 px-4 rounded-lg hover:bg-stone-200 transition-colors">
+                View Raw Blueprint
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- 
+            =================================
+            PAGE 1: GAMIFIED QUEST LOG
+            =================================
+        -->
+        <div id="page-quest-log" class="bg-white shadow-lg rounded-lg p-6 sm:p-8">
+
+            <!-- Global Progress Bar -->
+            <section class="mb-8">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-xl font-semibold text-stone-700">v2.0 "Workbench" Progress</h2>
+                    <span id="progress-text" class="text-lg font-bold text-indigo-600">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+                <p id="progress-subtext" class="text-sm text-stone-500 mt-2">0 / 14 tasks completed</p>
+            </section>
+
+            <!-- Stepper Timeline -->
+            <div class="timeline">
+
+                <!-- Step 1: Setup -->
+                <div class="timeline-step" data-phase="setup">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title" data-phase-toggle="setup">
+                            Phase 1: Setup (The Critical Path)
+                        </h3>
+                        <div class="timeline-tasks expanded" data-phase-content="setup">
+                            <ul class="space-y-4">
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-setup-1" data-task-id="setup-1" class="v2-task">
+                                        <div>
+                                            <label for="task-setup-1">Create Firebase Project</label>
+                                            <p class="task-desc">Go to the Firebase Console and create the new project.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-setup-2" data-task-id="setup-2" class="v2-task">
+                                        <div>
+                                            <label for="task-setup-2">Add Web App & Get Config</label>
+                                            <p class="task-desc">Add a new "Web App" and copy the `firebaseConfig` object.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-setup-3" data-task-id="setup-3" class="v2-task">
+                                        <div>
+                                            <label for="task-setup-3">Enable Authentication</label>
+                                            <p class="task-desc">Enable the "Google" sign-in provider.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-setup-4" data-task-id="setup-4" class="v2-task">
+                                        <div>
+                                            <label for="task-setup-4">Enable Firestore Database</label>
+                                            <p class="task-desc">Create the database in "production mode".</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-setup-5" data-task-id="setup-5" class="v2-task">
+                                        <div>
+                                            <label for="task-setup-5">Set Security Rules</label>
+                                            <p class="task-desc">Paste the rules from the blueprint text.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Global UI/UX -->
+                <div class="timeline-step" data-phase="global-ui">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title" data-phase-toggle="global-ui">
+                            Phase 2: Global UI/UX (Robustness)
+                        </h3>
+                        <div class="timeline-tasks" data-phase-content="global-ui">
+                            <ul class="space-y-4">
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-global-1" data-task-id="global-1" class="v2-task">
+                                        <div>
+                                            <label for="task-global-1">Build "Empty States"</label>
+                                            <p class="task-desc">Create helpful messages for when lists are empty.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-global-2" data-task-id="global-2" class="v2-task">
+                                        <div>
+                                            <label for="task-global-2">Implement CRUD Operations</label>
+                                            <p class="task-desc">Add Create, Read, Update (Edit), and Delete functions for Goals & Bricks.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-global-3" data-task-id="global-3" class="v2-task">
+                                        <div>
+                                            <label for="task-global-3">Implement "Soft Delete" & "Undo"</label>
+                                            <p class="task-desc">Build the "Undo" toast notification and `isDeleted` flag logic.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-global-4" data-task-id="global-4" class="v2-task">
+                                        <div>
+                                            <label for="task-global-4">Implement User Feedback</label>
+                                            <p class="task-desc">Build the global Loading spinner, Success messages, and Error handlers.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Core Modules -->
+                <div class="timeline-step" data-phase="modules">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title" data-phase-toggle="modules">
+                            Phase 3: Core Modules (The "What")
+                        </h3>
+                        <div class="timeline-tasks" data-phase-content="modules">
+                             <ul class="space-y-4">
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-module-1" data-task-id="module-1" class="v2-task">
+                                        <div>
+                                            <label for="task-module-1">Module 1: Authentication</label>
+                                            <p class="task-desc">Build the login/logout flow and UI.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-module-2" data-task-id="module-2" class="v2-task">
+                                        <div>
+                                            <label for="task-module-2">Module 2: "Comprehend" (Goals)</label>
+                                            <p class="task-desc">Build the Goals tab (create, list, edit, delete goals).</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-module-3" data-task-id="module-3" class="v2-task">
+                                        <div>
+                                            <label for="task-module-3">Module 3: "Deconstruct" (Workbench)</label>
+                                            <p class="task-desc">Build the "One Brick" list and the "Brain Dump" auto-saving notepad.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-module-4" data-task-id="module-4" class="v2-task">
+                                        <div>
+                                            <label for="task-module-4">Module 4: "Reconstruct" (Log)</label>
+                                            <p class="task-desc">Build the read-only list of completed bricks.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-module-5" data-task-id="module-5" class="v2-task">
+                                        <div>
+                                            <label for="task-module-5">Module 5: "Energy" (Log)</label>
+                                            <p class="task-desc">Build the slider, log button, and Chart.js line chart.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Future Roadmap -->
+                <div class="timeline-step" data-phase="future">
+                    <div class="timeline-dot" style="background-color: rgb(var(--color-primary-accent)); color: white;">v3</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title" data-phase-toggle="future">
+                            Quest 2: v3.0 Roadmap (Future)
+                        </h3>
+                        <div class="timeline-tasks" data-phase-content="future">
+                            <ul class="space-y-4">
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-future-1" data-task-id="future-1">
+                                        <div>
+                                            <label for="task-future-1">v3.0: Project Sharing</label>
+                                            <p class="task-desc">Implement a "Friends List" and sharing features.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-future-2" data-task-id="future-2">
+                                        <div>
+                                            <label for="task-future-2">v3.1: Advanced Statistics</label>
+                                            <p class="task-desc">Create a new "Stats" tab with weekly productivity charts.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-future-3" data-task-id="future-3">
+                                        <div>
+                                            <label for="task-future-3">v3.2: PWA (Progressive Web App)</label>
+                                            <p class="task-desc">Make the app "installable" on a phone's home screen.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-future-4" data-task-id="future-4">
+                                        <div>
+                                            <label for="task-future-4">v3.3: Framework Migration</label>
+                                            <p class="task-desc">Migrate the project to a full-stack framework like Next.js.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-future-5" data-task-id="future-5">
+                                        <div>
+                                            <label for="task-future-5">v3.4: "Trash Can" Recovery</label>
+                                            <p class="task-desc">Build a UI to restore or permanently delete "soft-deleted" items.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="task-list-item">
+                                    <div class="task-item">
+                                        <input type="checkbox" id="task-future-6" data-task-id="future-6">
+                                        <div>
+                                            <label for="task-future-6">v3.5: "Daily Log / Mood Journal"</label>
+                                            <p class="task-desc">Add a separate journal for logging daily mood and notes.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- End Timeline -->
+
+        </div> <!-- End Page 1: Quest Log -->
+
+        <!-- 
+            =================================
+            PAGE 2: RAW BLUEPRINT TEXT
+            (Re-designed for clarity)
+            =================================
+        -->
+        <div id="page-blueprint-text" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Main Blueprint Content -->
+                <div class="md:col-span-2 bg-white shadow-lg rounded-lg p-6 sm:p-8 blueprint-doc-content">
+                    
+                    <h2 class="text-2xl font-bold text-stone-800 mb-6">TAFG v2: Raw Blueprint</h2>
+                    
+                    <h3 class="text-indigo-600">Mission & Philosophy</h3>
+                    <ul>
+                        <li><strong>A Tool, not a Guidebook:</strong> The UI *is* the 3-step process.</li>
+                        <li><strong>ADHD-Friendly:</strong> Enforce focus ("One Brick") but provide an outlet ("Brain Dump").</li>
+                        <li><strong>Motivation via Proof:</strong> Build motivation by tracking tangible, "graspable" progress.</li>
+                        <li><strong>Safe to Fail:</strong> "Undo" and "Soft Delete" remove the anxiety of making a mistake.</li>
+                    </ul>
+
+                    <h3 class="text-amber-600">Phase 1: Setup (The Critical Path)</h3>
+                    <h4>Firebase Security Rules</h4>
+                    <p>These rules ensure users can ONLY read/write their OWN data. This is critical for privacy.</p>
+                    <pre><code><span class="comment">// (From Blueprint Sec 3)</span>
+<span class="keyword">rules_version</span> = <span class="string">'2'</span>;
+<span class="keyword">service</span> <span class="function">cloud.firestore</span> {
+  <span class="keyword">match</span> /<span class="function">databases</span>/{<span class="string">database</span>}/<span class="function">documents</span> {
+    
+    <span class="comment">// Users can only access documents in their own 'users/{userId}' path</span>
+    <span class="keyword">match</span> /<span class="function">users</span>/{<span class="string">userId</span>}/{<span class="string">documents=**</span>} {
+      <span class="keyword">allow</span> <span class="function">read, write:</span> <span class="keyword">if</span> <span class="function">request.auth</span> != <span class="keyword">null</span> && <span class="function">request.auth.uid</span> == <span class="string">userId</span>;
+    }
+  }
+}</code></pre>
+
+                    <h3 class="text-amber-600">Phase 2: Global UI/UX (Robustness)</h3>
+                    <h4>Build "Empty States"</h4>
+                    <p><strong>Why:</strong> A new user opening the app to a blank white screen is demotivating and confusing. We must design a welcoming "Empty State" that actively guides them (e.g., "Welcome! Create your first Goal to get started.")</p>
+                    <h4>Implement CRUD Operations</h4>
+                    <p><strong>Why:</strong> The app is useless if a user can't fix a typo or remove a bad idea. This is a non-negotiable requirement for a real tool. We need "Edit" and "Delete" buttons on all user-created content.</p>
+                    <h4>Implement "Soft Delete" & "Undo"</h4>
+                    <p><strong>Why:</strong> To remove the anxiety of accidentally deleting something. We will use "Soft Deletes" (setting `isDeleted: true` instead of truly deleting). This provides a 5-10 second "Undo" window and makes a "Trash Can" feature possible in the future.</p>
+                    <h4>Implement User Feedback</h4>
+                    <p><strong>Why:</strong> The app must communicate with the user. If they click "Save" and the internet is down, it can't just fail silently. We need to show "Loading..." (on save), "Saved!" (on success), and "Error: Check connection" (on failure).</p>
+
+                    <h3 class="text-amber-600">Phase 3: Core Modules (The "What")</h3>
+                    <h4>Module 1: Authentication</h4>
+                    <p><strong>What:</strong> Handles Google Sign-in. This is the "key" to the app. It will manage the user's `userId`, which is required to fetch all their private data.</p>
+                    <h4>Module 2: "Comprehend" (Goals)</h4>
+                    <p><strong>What:</strong> This is the user's "Goal Dashboard." It's a full CRUD module where a user can add a new "One True Thing" (a Goal), see their list of active Goals, select one to work on, edit its title, and delete it.</p>
+                    <h4>Module 3: "Deconstruct" (Workbench)</h4>
+                    <p><strong>What:</strong> The core of the app. This tab is split in two:</p>
+                    <ul>
+                        <li><strong>"One Brick" List:</strong> A to-do list that *only* shows tasks for the *active* Goal. Enforces focus.</li>
+                        <li><strong>"Brain Dump" Notepad:</strong> A simple, auto-saving text area for all the other ideas, preventing the user from derailing their focus by adding them to the "One Brick" list.</li>
+                    </ul>
+                    <h4>Module 4: "Reconstruct" (Log)</h4>
+                    <p><strong>What:</strong> A simple, motivating "Done" list. When a "Brick" is checked off in the Deconstruct tab, it moves here. This provides the "graspable proof" of progress, which is a key motivator.</p>
+                    <h4>Module 5: "Energy" (Log)</h4>
+                    <p><strong>What:</strong> The "Two-Front War" log. A slider lets the user log their daily energy split ("Healing" vs. "Building"). A Chart.js line graph then plots this data over time, helping the user "Comprehend" their own patterns.</p>
+                
+                    <h3 class="text-indigo-600">Quest 2: v3.0 Roadmap (Future)</h3>
+                    <ul>
+                        <li><strong>v3.0: Project Sharing:</strong> Implement a "Friends List" and sharing features.</li>
+                        <li><strong>v3.1: Advanced Statistics:</strong> Create a new "Stats" tab with weekly productivity charts.</li>
+                        <li><strong>v3.2: PWA (Progressive Web App):</strong> Make the app "installable" on a phone's home screen.</li>
+                        <li><strong>v3.3: Framework Migration:</strong> Migrate the project to a full-stack framework like Next.js.</li>
+                        <li><strong>v3.4: "Trash Can" Recovery:</strong> Build a UI to restore or permanently delete "soft-deleted" items.</li>
+                        <li><strong>v3.5: "Daily Log / Mood Journal":</strong> Add a separate journal for logging daily mood and notes.</li>
+                    </ul>
+
+                </div>
+
+                <!-- Sticky Sidebar -->
+                <aside class="md:col-span-1 space-y-6">
+                    <div class="sticky top-24">
+                        <section>
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-xl font-semibold text-stone-700 mb-4">Tech Stack</h2>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center">
+                                        <span class="text-lg">📦</span>
+                                        <div class="ml-3">
+                                            <h3 class="font-medium text-stone-800">HTML & TailwindCSS</h3>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-lg">📜</span>
+                                        <div class="ml-3">
+                                            <h3 class="font-medium text-stone-800">Vanilla JavaScript</h3>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-lg">🔥</span>
+                                        <div class="ml-3">
+                                            <h3 class="font-medium text-stone-800">Google Firebase</h3>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-lg">📊</span>
+                                        <div class="ml-3">
+                                            <h3 class="font-medium text-stone-800">Chart.js</h3>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-lg">☁️</span>
+                                        <div class="ml-3">
+                                            <h3 class="font-medium text-stone-800">Vercel / GitHub Pages</h3>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </section>
+        
+                        <section class="mt-6">
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-xl font-semibold text-stone-700 mb-4">Data Structure</h2>
+                                <pre><code><span class="comment">// (From Blueprint Sec 5)</span>
+<span class="function">users</span>/ {
+  <span class="string">{userId}</span>/ {
+    <span class="function">goals</span>/ { ... },
+    <span class="function">bricks</span>/ { ... },
+    <span class="function">notes</span>/ { ... },
+    <span class="function">energyLog</span>/ { ... }
+  }
+}</code></pre>
+                            </div>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+        </div> <!-- End Page 2: Blueprint Text -->
+
+    </main>
+    
+    <!-- 
+        =================================
+        JavaScript Logic (FIXED)
+        =================================
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const STORAGE_KEY = 'tafg_quest_progress_v2';
+
+            // --- Page Toggling ---
+            const toggleBtn = document.getElementById('toggle-view-btn');
+            const questPage = document.getElementById('page-quest-log');
+            const blueprintPage = document.getElementById('page-blueprint-text');
+            let isQuestLogView = true;
+
+            toggleBtn.addEventListener('click', () => {
+                isQuestLogView = !isQuestLogView;
+                if (isQuestLogView) {
+                    questPage.classList.remove('hidden');
+                    blueprintPage.classList.add('hidden');
+                    toggleBtn.textContent = 'View Raw Blueprint';
+                } else {
+                    questPage.classList.add('hidden');
+                    blueprintPage.classList.remove('hidden');
+                    toggleBtn.textContent = 'View Quest Log';
+                }
+            });
+
+            // --- Timeline Toggling ---
+            const timelineTitles = document.querySelectorAll('.timeline-title');
+            timelineTitles.forEach(title => {
+                title.addEventListener('click', () => {
+                    const phase = title.dataset.phaseToggle;
+                    const content = document.querySelector(`.timeline-tasks[data-phase-content="${phase}"]`);
+                    content.classList.toggle('expanded');
+                });
+            });
+
+            // --- Progress Tracking ---
+            const allTasks = document.querySelectorAll('input[type="checkbox"]');
+            const v2Tasks = document.querySelectorAll('.v2-task'); // Tasks for the main progress bar
+            const totalV2Tasks = v2Tasks.length;
+
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const progressSubtext = document.getElementById('progress-subtext');
+
+            // Function to update the main v2.0 progress bar
+            function updateMainProgress() {
+                const checkedV2Tasks = document.querySelectorAll('.v2-task:checked').length;
+                const percentage = totalV2Tasks > 0 ? Math.round((checkedV2Tasks / totalV2Tasks) * 100) : 0;
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${percentage}%`;
+
+                if (percentage === 100) {
+                    progressBar.classList.remove('bg-indigo-600');
+                    progressBar.classList.add('bg-green-600');
+                    progressText.textContent = "100% - Quest Complete!";
+                    progressSubtext.textContent = `${checkedV2Tasks} / ${totalV2Tasks} tasks completed. Well done!`;
+                    progressText.classList.remove('text-indigo-600');
+                    progressText.classList.add('text-green-700');
+                } else {
+                    progressBar.classList.add('bg-indigo-600');
+                    progressBar.classList.remove('bg-green-600');
+                    progressText.textContent = `${percentage}%`;
+                    progressSubtext.textContent = `${checkedV2Tasks} / ${totalV2Tasks} tasks completed`;
+                    progressText.classList.add('text-indigo-600');
+                    progressText.classList.remove('text-green-700');
+                }
+            }
+
+            // Function to update the visual style of a phase (dot)
+            function updatePhaseVisuals(phaseStep) {
+                const tasksInPhase = phaseStep.querySelectorAll('input[type="checkbox"]');
+                const checkedTasksInPhase = phaseStep.querySelectorAll('input[type="checkbox"]:checked');
+                
+                if (tasksInPhase.length > 0 && tasksInPhase.length === checkedTasksInPhase.length) {
+                    phaseStep.classList.add('timeline-step-complete');
+                } else {
+                    phaseStep.classList.remove('timeline-step-complete');
+                }
+            }
+
+            // Function to save progress to localStorage
+            function saveProgress() {
+                let progress = {};
+                allTasks.forEach(task => {
+                    progress[task.dataset.taskId] = task.checked;
+                });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+            }
+
+            // Function to load progress from localStorage
+            function loadProgress() {
+                const savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                
+                if (savedProgress) {
+                    allTasks.forEach(task => {
+                        const taskId = task.dataset.taskId;
+                        if (savedProgress[taskId]) {
+                            task.checked = true;
+                            task.closest('.task-list-item').classList.add('task-complete');
+                        }
+                    });
+                }
+                
+                // Update all visuals on load
+                updateMainProgress();
+                document.querySelectorAll('.timeline-step').forEach(step => {
+                    updatePhaseVisuals(step);
+                });
+            }
+
+            // Add event listener to all checkboxes
+            allTasks.forEach(task => {
+                task.addEventListener('change', (e) => {
+                    const taskListItem = e.target.closest('.task-list-item');
+                    if (e.target.checked) {
+                        taskListItem.classList.add('task-complete');
+                    } else {
+                        taskListItem.classList.remove('task-complete');
+                    }
+                    
+                    // Update the main progress bar (if it was a v2 task)
+                    if (e.target.classList.contains('v2-task')) {
+                        updateMainProgress();
+                    }
+                    
+                    // Update the phase visual (dot)
+                    const parentPhase = e.target.closest('.timeline-step');
+                    if (parentPhase) {
+                        updatePhaseVisuals(parentPhase);
+                    }
+                    
+                    saveProgress();
+                });
+            });
+
+            // Initial load
+            loadProgress();
+        });
+    </script>
+</body>
+</html>
+
