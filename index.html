@@ -106,18 +106,13 @@
         #version-edward .step-button {
             @apply w-full text-left px-6 py-4 text-lg font-bold rounded-lg shadow-sm border-2 border-transparent transition-all;
         }
-        #version-edward .step-button-active {
-            @apply bg-white text-teal-700 border-teal-600 shadow-lg;
+        /* REMOVED: .step-button-active and .step-button-inactive */
+        /* ADDED: A single, consistent style for the new <a> links */
+        #version-edward .step-nav-link {
+            @apply block w-full text-left px-6 py-4 text-lg font-bold rounded-lg shadow-sm border-2 transition-all bg-white text-teal-700 border-teal-600 shadow-lg hover:bg-teal-50;
         }
-        #version-edward .step-button-inactive {
-            @apply bg-stone-100 text-stone-600 hover:bg-stone-200;
-        }
-        #version-edward .step-content {
-            @apply hidden;
-        }
-        #version-edward .step-content-active {
-            @apply block;
-        }
+        /* REMOVED: .step-content (display: hidden) */
+        /* REMOVED: .step-content-active (display: block) */
         #version-edward input[type=range]::-webkit-slider-thumb {
             @apply bg-teal-600;
         }
@@ -183,6 +178,8 @@
             border-radius: 0.5rem;
             padding: 1rem;
         }
+
+        /* --- REMOVED: CSS for Edward's sticky tabs on mobile --- */
     </style>
 </head>
 <body class="text-stone-800">
@@ -200,7 +197,7 @@
       All content from Edward.html's <body> is placed inside this div.
     -->
     <div id="version-edward">
-        <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-stone-200">
+        <header class="bg-white/80 backdrop-blur-md sticky top-[60px] z-50 shadow-sm border-b border-stone-200">
             <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex-shrink-0">
@@ -246,15 +243,22 @@
                 <h2 class="text-3xl font-bold text-teal-700 mb-4 text-center">The 3-Step Transmutation Process</h2>
                 <p class="text-lg text-stone-700 text-center max-w-3xl mx-auto mb-8">This is your core loop for *any* goal, from healing trauma to starting a YouTube channel. Click each step below to see the process, the trap, the action, and the data behind it.</p>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                    <button id="comprehendBtn" class="step-button step-button-active">1. Comprehension</button>
-                    <button id="deconstructBtn" class="step-button step-button-inactive">2. Deconstruction</button>
-                    <button id="reconstructBtn" class="step-button step-button-inactive">3. Reconstruction</button>
+                <!-- CHANGED: Buttons are now <a> tags pointing to anchors -->
+                <div id="edward-tab-buttons" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <a href="#edward-step-1" class="step-nav-link">1. Comprehension</a>
+                    <a href="#edward-step-2" class="step-nav-link">2. Deconstruction</a>
+                    <a href="#edward-step-3" class="step-nav-link">3. Reconstruction</a>
                 </div>
 
+                <!-- CHANGED: Removed mt-6 from this div -->
                 <div class="bg-white rounded-lg shadow-xl border border-stone-200 p-6 md:p-8">
                     
-                    <div id="comprehendContent" class="step-content step-content-active">
+                    <!-- CHANGED: 
+                      - Removed .step-content and .step-content-active
+                      - Added id="edward-step-1" for the anchor link
+                      - Added pt-8 for scroll-padding
+                    -->
+                    <div id="edward-step-1" class="pt-8">
                         <h3 class="text-2xl font-bold text-stone-900 mb-3">Step 1: Comprehension (Analyze the "What Is")</h3>
                         <p class="text-stone-700 mb-6">This is the act of looking at your situation with 100% honesty, without judgment. You are just taking inventory of your "raw materials"—passions, skills, resources, and truths.</p>
                         
@@ -279,7 +283,12 @@
                         </div>
                     </div>
                     
-                    <div id="deconstructContent" class="step-content">
+                    <!-- CHANGED: 
+                      - Removed .step-content
+                      - Added id="edward-step-2" for the anchor link
+                      - Added pt-16 for scroll-padding and spacing
+                    -->
+                    <div id="edward-step-2" class="pt-16">
                         <h3 class="text-2xl font-bold text-stone-900 mb-3">Step 2: Deconstruction (Break It Down)</h3>
                         <p class="text-stone-700 mb-6">Take your "Comprehended" goal and break it into the smallest, most laughably simple *physical* action. Not a list. **Just one step.** (e.g., "Start YouTube channel" &rarr; "Open phone's camera").</p>
                         
@@ -304,7 +313,12 @@
                         </div>
                     </div>
                     
-                    <div id="reconstructContent" class="step-content">
+                    <!-- CHANGED: 
+                      - Removed .step-content
+                      - Added id="edward-step-3" for the anchor link
+                      - Added pt-16 for scroll-padding and spacing
+                    -->
+                    <div id="edward-step-3" class="pt-16">
                         <h3 class="text-2xl font-bold text-stone-900 mb-3">Step 3: Reconstruction (Do the *One* Thing)</h3>
                         <p class="text-stone-700 mb-6">This is where you *do* the "one brick" step. You *actually* open the camera. This is the *only* step that creates real-world change and moves a goal from "imagination" to "reality."</p>
                         
@@ -615,24 +629,12 @@
         function setupEdward() {
             // Find elements within the #version-edward container
             const edwardContainer = document.getElementById('version-edward');
-            const comprehendBtn = edwardContainer.querySelector('#comprehendBtn');
-            const deconstructBtn = edwardContainer.querySelector('#deconstructBtn');
-            const reconstructBtn = edwardContainer.querySelector('#reconstructBtn');
-
-            const comprehendContent = edwardContainer.querySelector('#comprehendContent');
-            const deconstructContent = edwardContainer.querySelector('#deconstructContent');
-            const reconstructContent = edwardContainer.querySelector('#reconstructContent');
-
-            // Check if buttons exist before adding listeners
-            if (!comprehendBtn || !deconstructBtn || !reconstructBtn) {
-                console.log("Edward's buttons not found, skipping tab logic.");
-                return; // Exit if main elements aren't found
-            }
-
-            const buttons = [comprehendBtn, deconstructBtn, reconstructBtn];
-            const contents = [comprehendContent, deconstructContent, reconstructContent];
-
-            let chart1, chart2, chart3_1, chart3_2, energyChart;
+            
+            // --- REMOVED Tab Button and Content variables ---
+            
+            // Map to store active chart instances
+            let activeCharts = new Map();
+            let energyChart; // Keep energyChart separate as it's not lazy-loaded
 
             const tooltipConfig = {
                 callbacks: {
@@ -657,10 +659,11 @@
             };
 
             function initComprehensionChart() {
-                if (chart1) chart1.destroy();
+                // if (chart1) chart1.destroy(); // No longer needed
                 const ctx = edwardContainer.querySelector('#comprehensionChart')?.getContext('2d');
                 if (!ctx) return;
-                chart1 = new Chart(ctx, {
+                // RETURN the new chart instance
+                return new Chart(ctx, {
                     type: 'pie',
                     data: {
                         labels: ['Excessive Research', 'Endless Planning', 'Doing'],
@@ -676,10 +679,11 @@
             }
 
             function initDeconstructionChart() {
-                if (chart2) chart2.destroy();
+                // if (chart2) chart2.destroy(); // No longer needed
                 const ctx = edwardContainer.querySelector('#deconstructionChart')?.getContext('2d');
                 if (!ctx) return;
-                chart2 = new Chart(ctx, {
+                // RETURN the new chart instance
+                return new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: ['The Trap (Vague Goal)', 'The Action (One-Brick Rule)'],
@@ -712,14 +716,13 @@
                 });
             }
 
-            function initReconstructionCharts() {
-                if (chart3_1) chart3_1.destroy();
-                if (chart3_2) chart3_2.destroy();
-
+            // SPLIT initReconstructionCharts into two separate functions
+            function initReconstructionChart1() {
+                // if (chart3_1) chart3_1.destroy(); // No longer needed
                 const ctx1 = edwardContainer.querySelector('#reconstructionChart1')?.getContext('2d');
-                if (ctx1) {
-                    chart3_1 = new Chart(ctx1, {
-                        type: 'doughnut',
+                if (!ctx1) return;
+                return new Chart(ctx1, {
+                    type: 'doughnut',
                         data: {
                             labels: ['Effort (99%)', 'Done (1%)'],
                             datasets: [{
@@ -729,14 +732,16 @@
                                 borderWidth: 2
                             }]
                         },
-                        options: pieOptions
-                    });
-                }
+                    options: pieOptions
+                });
+            }
 
+            function initReconstructionChart2() {
+                // if (chart3_2) chart3_2.destroy(); // No longer needed
                 const ctx2 = edwardContainer.querySelector('#reconstructionChart2')?.getContext('2d');
-                if (ctx2) {
-                    chart3_2 = new Chart(ctx2, {
-                        type: 'doughnut',
+                if (!ctx2) return;
+                return new Chart(ctx2, {
+                    type: 'doughnut',
                         data: {
                             labels: ['Done (100%)'],
                             datasets: [{
@@ -746,43 +751,62 @@
                                 borderWidth: 2
                             }]
                         },
-                        options: pieOptions
-                    });
-                }
+                    options: pieOptions
+                });
             }
 
-            function destroyCharts() {
-                if (chart1) chart1.destroy();
-                if (chart2) chart2.destroy();
-                if (chart3_1) chart3_1.destroy();
-                if (chart3_2) chart3_2.destroy();
-            }
+            // --- REMOVED destroyCharts() function ---
+            // --- REMOVED showTab() function ---
+            // --- REMOVED Tab Button event listeners ---
 
-            function showTab(tabName) {
-                destroyCharts();
-                contents.forEach(content => content.classList.remove('step-content-active'));
-                buttons.forEach(button => button.classList.replace('step-button-active', 'step-button-inactive'));
+            // --- NEW: IntersectionObserver Logic ---
 
-                if (tabName === 'comprehend') {
-                    comprehendContent.classList.add('step-content-active');
-                    comprehendBtn.classList.replace('step-button-inactive', 'step-button-active');
-                    initComprehensionChart();
-                } else if (tabName === 'deconstruct') {
-                    deconstructContent.classList.add('step-content-active');
-                    deconstructBtn.classList.replace('step-button-inactive', 'step-button-active');
-                    initDeconstructionChart();
-                } else if (tabName === 'reconstruct') {
-                    reconstructContent.classList.add('step-content-active');
-                    reconstructBtn.classList.replace('step-button-inactive', 'step-button-active');
-                    initReconstructionCharts();
-                }
-            }
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    const canvasId = entry.target.id;
+                    if (entry.isIntersecting) {
+                        // Element is in view
+                        if (!activeCharts.has(canvasId)) {
+                            // console.log('Creating chart:', canvasId);
+                            let newChart;
+                            if (canvasId === 'comprehensionChart') {
+                                newChart = initComprehensionChart();
+                            } else if (canvasId === 'deconstructionChart') {
+                                newChart = initDeconstructionChart();
+                            } else if (canvasId === 'reconstructionChart1') {
+                                newChart = initReconstructionChart1();
+                            } else if (canvasId === 'reconstructionChart2') {
+                                newChart = initReconstructionChart2();
+                            }
+                            if (newChart) {
+                                activeCharts.set(canvasId, newChart);
+                            }
+                        }
+                    } else {
+                        // Element is out of view
+                        if (activeCharts.has(canvasId)) {
+                            // console.log('Destroying chart:', canvasId);
+                            activeCharts.get(canvasId).destroy();
+                            activeCharts.delete(canvasId);
+                        }
+                    }
+                });
+            };
 
-            comprehendBtn.addEventListener('click', () => showTab('comprehend'));
-            deconstructBtn.addEventListener('click', () => showTab('deconstruct'));
-            reconstructBtn.addEventListener('click', () => showTab('reconstruct'));
+            const chartObserver = new IntersectionObserver(observerCallback, {
+                rootMargin: '0px',
+                threshold: 0.1 // Fire when 10% of the element is visible
+            });
+
+            // Observe all the step charts
+            const chartCanvases = edwardContainer.querySelectorAll(
+                '#comprehensionChart, #deconstructionChart, #reconstructionChart1, #reconstructionChart2'
+            );
+            chartCanvases.forEach(canvas => chartObserver.observe(canvas));
+
+            // --- END of new Observer Logic ---
             
-            showTab('comprehend'); // Initialize the first tab
+            // --- REMOVED initial showTab('comprehend') call ---
 
             function initEnergySlider() {
                 const slider = edwardContainer.querySelector('#energySlider');
@@ -1149,3 +1173,5 @@
     </script>
 </body>
 </html>
+
+
