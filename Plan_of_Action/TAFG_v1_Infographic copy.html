@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Alchemist's Field Guide: Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F9FF; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 4px solid #004AAD;
+        }
+        .content-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .primary-blue { color: #004AAD; }
+        .accent-yellow { color: #FFC400; }
+        .secondary-blue { color: #008DDC; }
+        
+        .flow-arrow {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #004AAD;
+            text-align: center;
+            line-height: 1;
+        }
+        .trap-card {
+            background-color: #FFFBEB; 
+            border: 2px solid #FFC400;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .action-card {
+            background-color: #E0F2FE; 
+            border: 2px solid #008DDC;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-[#004AAD] text-white p-6 md:p-8 shadow-xl">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-black mb-2">The Alchemist's Field Guide</h1>
+            <p class="text-lg md:text-xl text-blue-100">A Visual Guide to Transmuting Your Life</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+
+        <section id="law" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-center">
+            <div class="kpi-card text-left p-6">
+                <p class="text-lg font-semibold text-gray-600 mb-2">TO GAIN</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold primary-blue">A Fulfilling Life</h2>
+            </div>
+            <div class="text-center">
+                <p class="text-2xl md:text-4xl font-black primary-blue">EQUIVALENT</p>
+                <p class="text-2xl md:text-4xl font-black primary-blue">EXCHANGE</p>
+            </div>
+            <div class="kpi-card text-left p-6 border-b-4 border-[#FFC400]">
+                <p class="text-lg font-semibold text-gray-600 mb-2">MUST "PAY"</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold accent-yellow">Time, Focus, & Comfort</h2>
+            </div>
+        </section>
+
+        <section id="process-flow" class="content-card mb-8">
+            <h3 class="text-2xl font-bold mb-6 text-center primary-blue">The 3-Step Transmutation Process</h3>
+            <div class="flex flex-col md:flex-row justify-between items-center text-center space-y-4 md:space-y-0 md:space-x-4">
+                
+                <div class="flex-1 w-full">
+                    <div class="p-4 bg-blue-100 rounded-lg shadow-md h-full">
+                        <span class="text-4xl">1️⃣</span>
+                        <h4 class="text-xl font-bold mt-2 primary-blue">COMPREHEND</h4>
+                        <p class="text-sm text-gray-700">Analyze the "What Is"</p>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow transform md:rotate-0 rotate-90">&rarr;</div>
+                
+                <div class="flex-1 w-full">
+                    <div class="p-4 bg-blue-100 rounded-lg shadow-md h-full">
+                        <span class="text-4xl">2️⃣</span>
+                        <h4 class="text-xl font-bold mt-2 primary-blue">DECONSTRUCT</h4>
+                        <p class="text-sm text-gray-700">Break It Down</p>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow transform md:rotate-0 rotate-90">&rarr;</div>
+                
+                <div class="flex-1 w-full">
+                    <div class="p-4 bg-blue-100 rounded-lg shadow-md h-full">
+                        <span class="text-4xl">3️⃣</span>
+                        <h4 class="text-xl font-bold mt-2 primary-blue">RECONSTRUCT</h4>
+                        <p class="text-sm text-gray-700">Do the One Thing</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flow-arrow mt-4">&darr;</div>
+            <p class="text-center text-xl font-bold primary-blue">( REPEAT THE CYCLE )</p>
+        </section>
+
+        <section id="step1" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="content-card">
+                <h3 class="text-2xl font-bold mb-3 primary-blue">Step 1: Comprehend (Analyze)</h3>
+                <p class="text-gray-700 mb-4">Before you can change anything, you must first understand it. This is taking an honest inventory of your raw materials—your skills, passions, resources, and truths—without judgment.</p>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="trap-card">
+                        <h4 class="text-lg font-bold text-yellow-800">ALCHEMIST'S TRAP: Analysis Paralysis</h4>
+                        <p class="text-sm text-yellow-700">Getting stuck researching 100 life paths, 50 tutorials, and 10-page plans. You burn all your energy *thinking* about the work.</p>
+                    </div>
+                    <div class="action-card">
+                        <h4 class="text-lg font-bold text-blue-800">YOUR ACTION: The "5-Minute Truth"</h4>
+                        <p class="text-sm text-blue-700">Set a timer for 5 minutes. Ask *one* simple question: "What's *one* thing I'm curious about right now?" That's it. You just need one ingredient.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 class="text-2xl font-bold mb-3 primary-blue">Example: Comprehending Your Materials</h3>
+                <p class="text-gray-700 mb-4">An honest self-assessment might look like this. You identify where you are strong (Creativity) and where you need support ("Boring" Focus).</p>
+                <div class="chart-container" style="max-width: 450px;">
+                    <canvas id="comprehendChart"></canvas>
+                </div>
+                <p class="text-gray-600 mt-4 text-sm italic"><strong>Key Takeaway:</strong> You don't need to be 10/10 in everything. You just need to know what materials you're working with.</p>
+            </div>
+        </section>
+
+        <section id="step2" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="content-card">
+                <h3 class="text-2xl font-bold mb-3 primary-blue">Step 2: Deconstruct (Break It Down)</h3>
+                <p class="text-gray-700 mb-4">Take your goal and break it into the smallest, most laughably simple *physical* action. Not a list. Just the *very next step*.</p>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="trap-card">
+                        <h4 class="text-lg font-bold text-yellow-800">ALCHEMIST'S TRAP: Over-Planning</h4>
+                        <p class="text-sm text-yellow-700">Your "plan" is a 100-step spreadsheet. This *feels* productive, but it's a form of procrastination. It's too big to start.</p>
+                    </div>
+                    <div class="action-card">
+                        <h4 class="text-lg font-bold text-blue-800">YOUR ACTION: The "One-Brick" Rule</h4>
+                        <p class="text-sm text-blue-700">You don't build a house. You lay *one brick*. Goal: "Make music." Step: "Open music app." That's the *only* step you focus on.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 class="text-2xl font-bold mb-3 primary-blue">Where Does Your Alchemical Energy Go?</h3>
+                <p class="text-gray-700 mb-4">Analysis paralysis and over-planning drain your energy before you can create anything. The "One-Brick" method flips the script.</p>
+                <div class="chart-container" style="max-width: 600px; height: 300px;">
+                    <canvas id="deconstructChart"></canvas>
+                </div>
+                <p class="text-gray-600 mt-4 text-sm italic"><strong>Key Takeaway:</strong> Shift your energy from *planning* the transmutation to *performing* it.</p>
+            </div>
+        </section>
+        
+        <section id="step3" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="content-card">
+                <h3 class="text-2xl font-bold mb-3 primary-blue">Step 3: Reconstruct (Do the Thing)</h3>
+                <p class="text-gray-700 mb-4">This is the *act* of transmutation. You do the "one brick" step. This is the only part that creates real-world change and moves an idea from "imagination" to "graspable reality."</p>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="trap-card">
+                        <h4 class="text-lg font-bold text-yellow-800">ALCHEMIST'S TRAP: Perfectionism</h4>
+                        <p class="text-sm text-yellow-700">"I can't post this video, the mic is bad." This is "Forbidden Human Transmutation"—trying to create a perfect masterpiece from nothing. It always fails.</p>
+                    </div>
+                    <div class="action-card">
+                        <h4 class="text-lg font-bold text-blue-800">YOUR ACTION: "Sufficient Transmutation"</h4>
+                        <p class="text-sm text-blue-700">The goal is not to be perfect. The goal is to *complete the circle*. Post the bad video. Save the messy song. **Done is better than perfect.**</D>
+                    </div>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 class="text-2xl font-bold mb-3 primary-blue">The "Cost" of Perfectionism</h3>
+                <p class="text-gray-700 mb-4">Perfectionism wastes all your effort and results in *nothing* being completed. "Sufficient Transmutation" gets you 100% of the way there.</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <div class="chart-container" style="max-width: 250px; height: 250px;">
+                            <canvas id="perfectionChart"></canvas>
+                        </div>
+                        <h4 class="text-lg font-bold primary-blue mt-2">Perfectionism</h4>
+                        <p class="text-sm text-gray-600">99% Effort, 0% Done</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="chart-container" style="max-width: 250px; height: 250px;">
+                            <canvas id="sufficientChart"></canvas>
+                        </div>
+                        <h4 class="text-lg font-bold primary-blue mt-2">"Sufficient"</h4>
+                        <p class="text-sm text-gray-600">100% Done</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="two-fronts" class="content-card mb-8">
+            <h3 class="text-2xl font-bold mb-3 text-center primary-blue">The Two-Front Alchemical War: Healing & Building</h3>
+            <p class="text-gray-700 mb-6 text-center max-w-3xl mx-auto">You are doing two "Great Works" at once: Healing your past and Building your future. Both are valid. Both draw from the *same* energy source. A day spent healing is not a day wasted.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="text-center content-card border-b-4 border-blue-500">
+                    <h4 class="text-xl font-bold primary-blue mb-4">A "Balanced" Day</h4>
+                    <div class="chart-container" style="max-width: 300px; height: 300px;">
+                        <canvas id="balancedDayChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 mt-4 text-sm italic">You have energy for both healing and creative work. Both move you forward.</p>
+                </div>
+                <div class="text-center content-card border-b-4 border-yellow-500">
+                    <h4 class="text-xl font-bold primary-blue mb-4">A "Hard" Day</h4>
+                    <div class="chart-container" style="max-width: 300px; height: 300px;">
+                        <canvas id="hardDayChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 mt-4 text-sm italic">Just surviving and healing took all your energy. **This is still a successful transmutation.** You survived. You healed. That is the work.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center p-8 text-gray-600 text-sm border-t border-blue-200 mt-8">
+        <p>This is your guide. You have the materials. You know the law. The work is yours to do.</p>
+        <p>Stand up, and walk. Keep moving forward.</p>
+        <p class="mt-4">&copy; 2025. This infographic is a single-page application built with HTML, Tailwind CSS, and Chart.js. No SVG or Mermaid JS elements were used in its construction.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const primaryBlue = '#004AAD';
+            const accentYellow = '#FFC400';
+            const secondaryBlue = '#008DDC';
+            const lightBlue = '#68CFFF';
+            const darkGray = '#334155';
+            const lightGray = '#E0F2FE';
+            const trapColor = '#FFFBEB';
+            
+            function wrapLabel(label) {
+                const maxLabelLength = 16;
+                if (typeof label !== 'string' || label.length <= maxLabelLength) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length <= maxLabelLength) {
+                        currentLine += word + ' ';
+                    } else {
+                        if (currentLine.length > 0) {
+                            lines.push(currentLine.trim());
+                        }
+                        currentLine = word + ' ';
+                    }
+                }
+                if (currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                }
+                return lines;
+            }
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+
+            const defaultTooltip = {
+                callbacks: {
+                    title: tooltipTitleCallback
+                },
+                bodyFont: {
+                    family: 'Inter'
+                },
+                titleFont: {
+                    family: 'Inter',
+                    weight: 'bold'
+                }
+            };
+
+            function initComprehendChart() {
+                const ctx = document.getElementById('comprehendChart')?.getContext('2d');
+                if (!ctx) return;
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Creativity', 'Passion', 'Resources', '"Boring" Focus', 'Empathy'],
+                        datasets: [{
+                            label: 'Your Raw Materials',
+                            data: [9, 10, 5, 3, 8],
+                            backgroundColor: 'rgba(0, 141, 220, 0.2)',
+                            borderColor: secondaryBlue,
+                            borderWidth: 2,
+                            pointBackgroundColor: secondaryBlue
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { ...defaultTooltip }
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 10,
+                                ticks: {
+                                    stepSize: 2,
+                                    backdropColor: 'transparent',
+                                    font: { family: 'Inter', size: 10 }
+                                },
+                                pointLabels: {
+                                    font: { family: 'Inter', size: 14, weight: 'bold' }
+                                },
+                                grid: {
+                                    color: '#E0E0E0'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function initDeconstructChart() {
+                const ctx = document.getElementById('deconstructChart')?.getContext('2d');
+                if (!ctx) return;
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["The Trap: Over-Planning", "The Action: 'One-Brick' Way"],
+                        datasets: [{
+                            label: 'Planning',
+                            data: [90, 10],
+                            backgroundColor: accentYellow,
+                        }, {
+                            label: 'Doing',
+                            data: [10, 90],
+                            backgroundColor: secondaryBlue,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { family: 'Inter', size: 12 } }
+                            },
+                            tooltip: { ...defaultTooltip }
+                        },
+                        scales: {
+                            x: {
+                                stacked: true,
+                                ticks: {
+                                    font: { family: 'Inter', size: 12 },
+                                    callback: (value) => value + '%'
+                                },
+                                grid: { display: false }
+                            },
+                            y: {
+                                stacked: true,
+                                ticks: {
+                                    font: { family: 'Inter', size: 12 }
+                                },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function initPerfectionismDonuts() {
+                const pCtx = document.getElementById('perfectionChart')?.getContext('2d');
+                if (pCtx) {
+                    new Chart(pCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Effort Wasted', 'Done'],
+                            datasets: [{
+                                data: [99, 1],
+                                backgroundColor: [trapColor, darkGray],
+                                borderColor: [accentYellow, darkGray],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '70%',
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { ...defaultTooltip }
+                            }
+                        }
+                    });
+                }
+                
+                const sCtx = document.getElementById('sufficientChart')?.getContext('2d');
+                if (sCtx) {
+                    new Chart(sCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Done'],
+                            datasets: [{
+                                data: [100],
+                                backgroundColor: [secondaryBlue],
+                                borderColor: [primaryBlue],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '70%',
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { ...defaultTooltip }
+                            }
+                        }
+                    });
+                }
+            }
+
+            function initEnergyWarDonuts() {
+                const bCtx = document.getElementById('balancedDayChart')?.getContext('2d');
+                if (bCtx) {
+                    new Chart(bCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Internal Work (Healing)', 'External Work (Building)'],
+                            datasets: [{
+                                data: [50, 50],
+                                backgroundColor: [lightBlue, secondaryBlue],
+                                borderColor: '#ffffff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 } } },
+                                tooltip: { ...defaultTooltip }
+                            }
+                        }
+                    });
+                }
+                
+                const hCtx = document.getElementById('hardDayChart')?.getContext('2d');
+                if (hCtx) {
+                    new Chart(hCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Internal Work (Healing)', 'External Work (Building)'],
+                            datasets: [{
+                                data: [90, 10],
+                                backgroundColor: [accentYellow, lightGray],
+                                borderColor: '#ffffff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 } } },
+                                tooltip: { ...defaultTooltip }
+                            }
+                        }
+                    });
+                }
+            }
+
+            initComprehendChart();
+            initDeconstructChart();
+            initPerfectionismDonuts();
+            initEnergyWarDonuts();
+        });
+    </script>
+</body>
+</html>
