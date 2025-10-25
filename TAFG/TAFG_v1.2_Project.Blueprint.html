@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TAFG_v1.2_Project.Blueprint.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="tafg-v2-the-alchemists-workbench--project-blueprint">TAFG v2: The Alchemist's Workbench — Project Blueprint</h1>
+<hr>
+<h2 id="%F0%9F%93%84-document-information">📄 Document Information</h2>
+<ul>
+<li><strong>Version:</strong> 1.2</li>
+<li><strong>Date:</strong> October 25, 2025</li>
+</ul>
+<hr>
+<h2 id="1-project-mission--philosophy">1. Project Mission &amp; Philosophy</h2>
+<h3 id="%F0%9F%8E%AF-mission">🎯 Mission</h3>
+<p>Create a single-page web application as a persistent, personal &quot;workbench&quot; based on &quot;The Alchemist's Field Guide&quot; (TAFG).</p>
+<h3 id="%F0%9F%92%A1-philosophy">💡 Philosophy</h3>
+<h4 id="15-global-uiux--robustness-requirements">1.5 Global UI/UX &amp; Robustness Requirements</h4>
+<p>Features required across all modules for usability:</p>
+<ul>
+<li>
+<p><strong>Empty States:</strong><br>
+Graceful handling for first-time users. All lists (Goals, Bricks) display a helpful message (e.g.,</p>
+<blockquote>
+<p>&quot;You have no Goals yet. Create your first one in the 'Comprehend' tab!&quot;)</p>
+</blockquote>
+</li>
+<li>
+<p><strong>CRUD Operations:</strong><br>
+Users can Create, Read, Update (Edit), and Delete their own Goals and Bricks.</p>
+</li>
+<li>
+<p><strong>Soft Delete &amp; Undo:</strong><br>
+Deleting sets a flag (<code>isDeleted: true</code>). A &quot;toast&quot; notification appears for 5–10 seconds with an &quot;Undo&quot; button.</p>
+</li>
+<li>
+<p><strong>User Feedback:</strong><br>
+Clear, non-technical feedback throughout.</p>
+</li>
+<li>
+<p><strong>Loading States:</strong><br>
+Show a spinner when fetching or saving data.</p>
+</li>
+<li>
+<p><strong>Success Messages:</strong><br>
+Brief confirmation (e.g.,</p>
+<blockquote>
+<p>&quot;Brick saved!&quot;)</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Error Handling:</strong><br>
+Friendly message if save fails (e.g.,</p>
+<blockquote>
+<p>&quot;Could not save. Please check your connection.&quot;)</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h2 id="2-technology-stack-the-%22how%22">2. Technology Stack (The &quot;How&quot;)</h2>
+<p>This project is a single HTML file using a Backend-as-a-Service (BaaS) for data and authentication.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Technology</th>
+<th>Choice &amp; (Pros/Cons)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontend File</td>
+<td>HTML</td>
+<td><code>TAFG_v2.html</code> (single file)</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>CSS</td>
+<td>Tailwind CSS (CDN) — Rapid, modern UI; CDN load</td>
+</tr>
+<tr>
+<td>App Logic</td>
+<td>JavaScript</td>
+<td>Vanilla JS (ES6+) — No build step, fast, all-in-one-file; code can get large</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>JS Library</td>
+<td>Chart.js (CDN) — Excellent for &quot;Energy Log&quot; chart</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>BaaS</td>
+<td>Google Firestore — Real-time, generous free plan, auto-scaling; requires setup</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>BaaS</td>
+<td>Google Firebase Auth — Secure, easy &quot;Sign in with Google,&quot; user management</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>Static Host</td>
+<td>Vercel or GitHub Pages — Free, fast, integrates with GitHub repo</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-core-setup-firebase-the-critical-path">3. Core Setup: Firebase (The Critical Path)</h2>
+<p>One-time setup steps:</p>
+<ol>
+<li>
+<p><strong>Create Project:</strong><br>
+Firebase Console → New project (e.g., &quot;Alchemist Workbench&quot;)</p>
+</li>
+<li>
+<p><strong>Add Web App:</strong><br>
+Dashboard → <code>&lt;/&gt;</code> icon → Add &quot;Web App&quot;</p>
+</li>
+<li>
+<p><strong>Get Config:</strong><br>
+Copy <code>firebaseConfig</code> object for use in <code>TAFG_v2.html</code></p>
+</li>
+<li>
+<p><strong>Enable Authentication:</strong><br>
+Build → Authentication → Sign-in method → Enable Google provider</p>
+</li>
+<li>
+<p><strong>Enable Database:</strong><br>
+Build → Firestore Database → Create database (start in &quot;production mode&quot;)</p>
+</li>
+<li>
+<p><strong>Set Security Rules:</strong><br>
+Firestore → Rules tab → Paste the following (ESSENTIAL for privacy):</p>
+<pre class="hljs"><code><div>rules_version = <span class="hljs-string">'2'</span>;
+service cloud.firestore {
+    match /databases/{database}/documents {
+        <span class="hljs-comment">// Allow users to read/write *only* their own documents in each collection</span>
+        match /goals/{docId} {
+            allow read, write, <span class="hljs-attr">delete</span>: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.auth.uid == resource.data.userId;
+        }
+        match /bricks/{docId} {
+            allow read, write, <span class="hljs-attr">delete</span>: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.auth.uid == resource.data.userId;
+        }
+        match /notes/{goalId} {
+            <span class="hljs-comment">// notes docId will BE the goalId</span>
+            allow read, write, <span class="hljs-attr">delete</span>: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.auth.uid == resource.data.userId;
+        }
+        match /energyLog/{docId} {
+            allow read, write, <span class="hljs-attr">delete</span>: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.auth.uid == resource.data.userId;
+        }
+        <span class="hljs-comment">// Add rules for new collections from v1.2 blueprint</span>
+        match /dailyLog/{docId} {
+            allow read, write, <span class="hljs-attr">delete</span>: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.auth.uid == resource.data.userId;
+        }
+
+        <span class="hljs-comment">// Allow users to *create* new documents, but only if they set the userId to their own</span>
+        match /goals/{docId} {
+            allow create: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.resource.data.userId == request.auth.uid;
+        }
+        match /bricks/{docId} {
+            allow create: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.resource.data.userId == request.auth.uid;
+        }
+        match /notes/{goalId} {
+            allow create: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.resource.data.userId == request.auth.uid;
+        }
+        match /energyLog/{docId} {
+            allow create: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.resource.data.userId == request.auth.uid;
+        }
+        <span class="hljs-comment">// Add create rule for new collections from v1.2 blueprint</span>
+        match /dailyLog/{docId} {
+            allow create: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; request.resource.data.userId == request.auth.uid;
+        }
+    }
+}
+</div></code></pre>
+</li>
+</ol>
+<hr>
+<h2 id="4-application-modules-the-%22what%22">4. Application Modules (The &quot;What&quot;)</h2>
+<p>The UI is a tabbed interface for a 3-step process:</p>
+<h3 id="module-1-authentication"><strong>Module 1: Authentication</strong></h3>
+<ul>
+<li><strong>UI:</strong>
+<ul>
+<li>&quot;Sign in with Google&quot; button on loading screen</li>
+<li>&quot;Sign Out&quot; button in header</li>
+</ul>
+</li>
+<li><strong>Logic:</strong>
+<ul>
+<li>Uses Firebase Auth</li>
+<li>On login, queries Firestore for user data</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="module-2-%22comprehend%22-your-goals"><strong>Module 2: &quot;Comprehend&quot; (Your Goals)</strong></h3>
+<ul>
+<li><strong>UI:</strong>
+<ul>
+<li>&quot;Project List&quot; tab</li>
+<li>Empty state message if no goals</li>
+<li>Text box:
+<blockquote>
+<p>&quot;What's your 'One True Thing'?&quot;</p>
+</blockquote>
+</li>
+<li>Button: <code>[ Alchemize (Create Goal) ]</code></li>
+<li>List of current goals (<code>isDeleted == false</code>) with <code>[Edit]</code> and <code>[Delete]</code> buttons</li>
+</ul>
+</li>
+<li><strong>Logic:</strong>
+<ul>
+<li>&quot;Alchemize&quot; creates a new goal</li>
+<li>List populated from goals collection</li>
+<li>Clicking a goal makes it &quot;active&quot;</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="module-3-%22deconstruct%22-your-workbench"><strong>Module 3: &quot;Deconstruct&quot; (Your Workbench)</strong></h3>
+<ul>
+<li><strong>UI:</strong>
+<ul>
+<li>Main &quot;work&quot; tab showing &quot;Active Goal&quot;</li>
+<li><strong>Part 1: &quot;Your One Brick&quot;</strong>
+<ul>
+<li>Text box:
+<blockquote>
+<p>&quot;What's the absolute next physical step?&quot;</p>
+</blockquote>
+</li>
+<li>Button: <code>[ Add Brick ]</code></li>
+<li>List of incomplete Bricks (<code>isDeleted == false</code>)</li>
+<li>Each brick: <code>[ ✓ ]</code> checkbox, <code>[Edit]</code>, <code>[Delete]</code></li>
+</ul>
+</li>
+<li><strong>Part 2: &quot;Brain Dump&quot; (The Note Pad)</strong>
+<ul>
+<li>Large text area below &quot;One Brick&quot;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Logic:</strong>
+<ul>
+<li>Adding a Brick creates a new document</li>
+<li>Checking <code>[ ✓ ]</code> updates <code>isComplete</code></li>
+<li>&quot;Brain Dump&quot; auto-saves to notes</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="module-4-%22reconstruct%22-your-log"><strong>Module 4: &quot;Reconstruct&quot; (Your Log)</strong></h3>
+<ul>
+<li><strong>UI:</strong>
+<ul>
+<li>&quot;Motivation&quot; tab</li>
+<li>Empty state if no completed bricks</li>
+<li>Reverse-chronological list of completed Bricks (<code>isComplete == true</code>, <code>isDeleted == false</code>)</li>
+</ul>
+</li>
+<li><strong>Logic:</strong>
+<ul>
+<li>Read-only query of bricks collection</li>
+<li>Shows tangible proof of progress</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="module-5-%22two-front-war%22-your-energy"><strong>Module 5: &quot;Two-Front War&quot; (Your Energy)</strong></h3>
+<ul>
+<li><strong>UI:</strong>
+<ul>
+<li>&quot;Energy&quot; tab</li>
+<li>Slider (Healing % vs. Building %)</li>
+<li>Button: <code>[ Log Today's Energy ]</code></li>
+<li>Empty state if no logs</li>
+<li>Chart.js line chart of energy log history</li>
+</ul>
+</li>
+<li><strong>Logic:</strong>
+<ul>
+<li>Button creates new energyLog document</li>
+<li>Chart reads from energyLog collection</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="5-data-structure-firestore-collections">5. Data Structure (Firestore Collections)</h2>
+<p>How data is organized:</p>
+<ul>
+<li>
+<p><strong>goals/</strong><br>
+<code>{goalId_A}: { userId: &quot;...&quot;, title: &quot;Start YouTube Channel&quot;, createdAt: ..., isDeleted: false }</code></p>
+</li>
+<li>
+<p><strong>bricks/</strong><br>
+<code>{brickId_A}: { userId: &quot;...&quot;, goalId: &quot;goalId_A&quot;, task: &quot;Open phone camera&quot;, isComplete: false, createdAt: ..., isDeleted: false }</code><br>
+<code>{brickId_B}: { userId: &quot;...&quot;, goalId: &quot;goalId_A&quot;, task: &quot;Google 'free video software'&quot;, isComplete: true, completedAt: ..., isDeleted: false }</code></p>
+</li>
+<li>
+<p><strong>notes/</strong><br>
+(Use goalId as document ID)<br>
+<code>{goalId_A}: { userId: &quot;...&quot;, content: &quot;auto-saved brain dump text...&quot;, updatedAt: ... }</code></p>
+</li>
+<li>
+<p><strong>energyLog/</strong><br>
+<code>{logId_A}: { userId: &quot;...&quot;, date: &quot;2025-10-25&quot;, healing: 70, building: 30 }</code></p>
+</li>
+<li>
+<p><strong>dailyLog/</strong><br>
+(For future v3.5)<br>
+<code>{logId_A}: { userId: &quot;...&quot;, date: &quot;2025-10-25&quot;, mood: 4, note: &quot;Good day, felt productive.&quot; }</code></p>
+</li>
+</ul>
+<hr>
+<h2 id="6-future-roadmap-the-%22v3%22-plan">6. Future Roadmap (The &quot;v3&quot; Plan)</h2>
+<p>Features postponed to ensure v2 is built correctly (&quot;One-Brick&quot; rule):</p>
+<ul>
+<li>
+<p><strong>v3.0: Project Sharing (&quot;Friends List&quot;)</strong></p>
+<ul>
+<li>Share a goalId with another user by email</li>
+<li>Requires new shares collection and complex security rules</li>
+</ul>
+</li>
+<li>
+<p><strong>v3.1: Advanced Statistics</strong></p>
+<ul>
+<li>&quot;Stats&quot; tab: Bricks completed per week, most productive day, etc.</li>
+</ul>
+</li>
+<li>
+<p><strong>v3.2: PWA (Progressive Web App)</strong></p>
+<ul>
+<li>Service worker and manifest for installable app-like experience</li>
+</ul>
+</li>
+<li>
+<p><strong>v3.3: Framework Migration (e.g., Next.js)</strong></p>
+<ul>
+<li>Move from single-file to full-stack framework for scalability and advanced features</li>
+</ul>
+</li>
+<li>
+<p><strong>v3.4: &quot;Trash Can&quot; (Recovery)</strong></p>
+<ul>
+<li>UI for viewing items with <code>isDeleted: true</code></li>
+<li>Permanently delete or restore items</li>
+</ul>
+</li>
+<li>
+<p><strong>v3.5: &quot;Daily Log / Mood Journal&quot;</strong></p>
+<ul>
+<li>Simple journal for daily mood score (1–5) and note</li>
+<li>Complements energyLog for qualitative self-reflection</li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>

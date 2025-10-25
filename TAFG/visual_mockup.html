@@ -1,0 +1,301 @@
+<!-- Chosen Palette: Calm Harmony (Warm Neutrals: stone, Complimentary: indigo, Accent: amber) -->
+<!-- THIS IS A NON-FUNCTIONAL VISUAL MOCK-UP. IT CONTAINS NO DATABASE OR AUTH LOGIC. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAFG v2: Workbench (Visual Mock-up)</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --color-primary: 39, 39, 42; /* stone-700 */
+            --color-primary-accent: 79, 70, 229; /* indigo-600 */
+            --color-secondary-accent: 217, 119, 6; /* amber-600 */
+            --color-bg-light: 245, 245, 244; /* stone-100 */
+            --color-bg-white: 255, 255, 255;
+        }
+        body {
+            background-color: rgb(var(--color-bg-light));
+            color: rgb(var(--color-primary));
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Custom Tab Styles */
+        .tab-btn {
+            @apply px-4 py-2 font-medium text-sm rounded-t-lg transition-colors duration-200 cursor-pointer;
+        }
+        .tab-btn-active {
+            @apply bg-white text-indigo-600 border-b-2 border-indigo-600;
+        }
+        .tab-btn-inactive {
+            @apply text-stone-500 hover:text-stone-700;
+        }
+        /* Icon button for edit/delete */
+        .icon-btn {
+            @apply p-1 text-stone-400 hover:text-stone-600 transition-colors;
+        }
+        /* Simple disabled styles */
+        input:disabled, textarea:disabled, button:disabled {
+            @apply opacity-70 cursor-not-allowed;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- STATE 1: Auth Screen (User is Logged Out) -->
+    <div id="auth-screen" class="flex min-h-screen items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-md text-center max-w-sm w-full">
+            <h1 class="text-2xl font-bold text-indigo-600 mb-2">The Alchemist's Workbench</h1>
+            <p class="text-stone-600 mb-6">Your personal tool for transmuting goals into reality.</p>
+            <button id="sign-in-btn" class="w-full bg-indigo-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center">
+                <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="m24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l.003-.002l6.19 5.238C39.601 36.31 44 30.651 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+                Sign in with Google (Mock)
+            </button>
+        </div>
+    </div>
+
+    <!-- STATE 2: App Screen (User is Logged In) -->
+    <div id="app-screen" class="min-h-screen hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold text-indigo-600">The Alchemist's Workbench</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span id="user-display" class="text-stone-600 text-sm mr-4">Your Friend's Name</span>
+                        <button id="sign-out-btn" class="text-sm font-medium text-indigo-600 hover:text-indigo-800">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Navigation -->
+            <nav class="border-b border-stone-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex -mb-px">
+                        <button id="tab-comprehend" class="tab-btn tab-btn-active" data-content="comprehend-content">1. Comprehend (Goals)</button>
+                        <button id="tab-deconstruct" class="tab-btn tab-btn-inactive" data-content="deconstruct-content">2. Deconstruct (Work)</button>
+                        <button id="tab-reconstruct" class="tab-btn tab-btn-inactive" data-content="reconstruct-content">3. Reconstruct (Log)</button>
+                        <button id="tab-energy" class="tab-btn tab-btn-inactive" data-content="energy-content">Energy (Log)</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="content-area" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            
+            <!-- Module 2: Comprehend (Goals) -->
+            <div id="comprehend-content">
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h2 class="text-xl font-semibold text-stone-700 mb-4">Create a New Goal (Your "One True Thing")</h2>
+                    <div class="flex gap-4">
+                        <input type="text" class="flex-grow p-3 border border-stone-300 rounded-lg" placeholder="e.g., &quot;Start my YouTube channel&quot;">
+                        <button class="bg-indigo-600 text-white font-medium py-3 px-5 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Alchemize
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-stone-700 mb-4">Your Active Goals</h2>
+                    <ul class="space-y-3">
+                        <!-- Placeholder Goal 1 (Active) -->
+                        <li class="flex items-center justify-between p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-lg">
+                            <span class="font-medium text-indigo-800">Start my YouTube channel</span>
+                            <div class="flex items-center space-x-2">
+                                <button class="icon-btn" title="Edit">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </button>
+                                <button class="icon-btn hover:text-red-600" title="Delete">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </li>
+                        <!-- Placeholder Goal 2 -->
+                        <li class="flex items-center justify-between p-4 bg-stone-50 rounded-lg">
+                            <span class="font-medium text-stone-700">Make a new song</span>
+                            <div class="flex items-center space-x-2">
+                                <button class="icon-btn" title="Edit">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </button>
+                                <button class="icon-btn hover:text-red-600" title="Delete">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 3: Deconstruct (Work) -->
+            <div id="deconstruct-content" class="hidden">
+                <h2 class="text-2xl font-bold text-stone-800 mb-4">Active Goal: <span class="text-indigo-600">Start my YouTube channel</span></h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Left Column: Workbench -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-stone-700 mb-4">Part 1: Your "One Brick"</h3>
+                        <p class="text-sm text-stone-500 mb-3">What's the absolute next physical step?</p>
+                        <div class="flex gap-4 mb-6">
+                            <input type="text" class="flex-grow p-3 border border-stone-300 rounded-lg" placeholder="e.g., &quot;Record 10 seconds of test footage&quot;">
+                            <button class="bg-indigo-600 text-white font-medium py-3 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Add</button>
+                        </div>
+                        
+                        <h3 class="text-lg font-semibold text-stone-700 mb-4">Brick Wall (To-Do)</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center justify-between p-4 bg-stone-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="h-5 w-5 text-indigo-600 rounded border-stone-300 focus:ring-indigo-500">
+                                    <span class="ml-3 font-medium text-stone-700">Record 10 seconds of test footage</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <button class="icon-btn" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+                                    <button class="icon-btn hover:text-red-600" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                                </div>
+                            </li>
+                            <li class="flex items-center justify-between p-4 bg-stone-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="h-5 w-5 text-indigo-600 rounded border-stone-300 focus:ring-indigo-500">
+                                    <span class="ml-3 font-medium text-stone-700">Google "free video editing software"</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <button class="icon-btn" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+                                    <button class="icon-btn hover:text-red-600" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Right Column: Brain Dump -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-stone-700 mb-4">Part 2: "Brain Dump"</h3>
+                        <p class="text-sm text-stone-500 mb-3">Got other ideas? Drop them here so you don't forget. This will auto-save.</p>
+                        <textarea class="w-full h-80 p-3 border border-stone-300 rounded-lg resize-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., - video idea: review of new game&#10;- channel art: need to make a banner&#10;- remember to check out that v-tuber's setup..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4: Reconstruct (Log) -->
+            <div id="reconstruct-content" class="hidden">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-stone-700 mb-4">Reconstructed Log (Your "Done" List)</h2>
+                    <p class="text-stone-500 mb-6">Proof of your transmutations. This is the "graspable" progress.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span class="ml-3 text-stone-700 line-through">Write script for first video</span>
+                            <span class="ml-auto text-sm text-stone-400">Oct 24, 2025</span>
+                        </li>
+                        <li class="flex items-center p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span class="ml-3 text-stone-700 line-through">Figure out OBS settings</span>
+                            <span class="ml-auto text-sm text-stone-400">Oct 23, 2025</span>
+                        </li>
+                        <li class="flex items-center p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span class="ml-3 text-stone-700 line-through">Buy a new microphone</span>
+                            <span class="ml-auto text-sm text-stone-400">Oct 22, 2025</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Module 5: Energy (Log) -->
+            <div id="energy-content" class="hidden">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-stone-700 mb-2">The "Two-Front War" Energy Log</h2>
+                    <p class="text-stone-500 mb-6">Log your energy allocation for today. How much went to healing, and how much to building?</p>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between font-medium mb-2">
+                            <span class="text-amber-600">Healing (Trauma)</span>
+                            <span class="text-indigo-600">Building (Work)</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span id="healing-label" class="text-xl font-bold text-amber-600 w-16 text-right">50%</span>
+                            <input id="energy-slider" type="range" min="0" max="100" value="50" class="w-full h-2 bg-gradient-to-r from-amber-400 to-indigo-400 rounded-lg appearance-none cursor-pointer">
+                            <span id="building-label" class="text-xl font-bold text-indigo-600 w-16 text-left">50%</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-indigo-600 text-white font-medium py-3 px-5 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Log Today's Energy
+                    </button>
+                    
+                    <hr class="my-8">
+                    
+                    <h3 class="text-xl font-semibold text-stone-700 mb-4">Energy Log History</h3>
+                    <div class="w-full h-80 bg-stone-50 border border-stone-200 rounded-lg flex items-center justify-center">
+                        <span class="text-stone-400 font-medium">[ Line Chart Placeholder: Energy Log Over Time ]</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- 
+        Minimal JS for MOCK-UP functionality (Tab switching and fake login)
+        NO FIREBASE or CHART.JS logic is included.
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const authScreen = document.getElementById('auth-screen');
+            const appScreen = document.getElementById('app-screen');
+            const signInBtn = document.getElementById('sign-in-btn');
+            const signOutBtn = document.getElementById('sign-out-btn');
+            
+            // Mock Sign-In
+            signInBtn.addEventListener('click', () => {
+                authScreen.classList.add('hidden');
+                appScreen.classList.remove('hidden');
+            });
+
+            // Mock Sign-Out
+            signOutBtn.addEventListener('click', () => {
+                appScreen.classList.add('hidden');
+                authScreen.classList.remove('hidden');
+            });
+
+            // Tab Navigation
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contentAreas = document.querySelectorAll('main > div[id$="-content"]');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetContentId = tab.getAttribute('data-content');
+
+                    tabs.forEach(t => {
+                        t.classList.remove('tab-btn-active');
+                        t.classList.add('tab-btn-inactive');
+                    });
+                    tab.classList.add('tab-btn-active');
+                    tab.classList.remove('tab-btn-inactive');
+
+                    contentAreas.forEach(area => {
+                        area.id === targetContentId ? area.classList.remove('hidden') : area.classList.add('hidden');
+                    });
+                });
+            });
+
+            // Mock Energy Slider
+            const slider = document.getElementById('energy-slider');
+            const healingLabel = document.getElementById('healing-label');
+            const buildingLabel = document.getElementById('building-label');
+
+            if(slider) {
+                slider.addEventListener('input', (e) => {
+                    const healing = e.target.value;
+                    const building = 100 - healing;
+                    healingLabel.textContent = `${healing}%`;
+                    buildingLabel.textContent = `${building}%`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
